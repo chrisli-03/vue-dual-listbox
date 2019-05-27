@@ -2,12 +2,13 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 var commonConfig = {
   entry: '../src/index.js',
   output: {
     path: path.resolve(__dirname + '/../dist/'),
-    filename: 'vue-dual-listbox.min.js'
+    filename: '[name].js'
   },
   module: {
     rules: [{
@@ -19,12 +20,29 @@ var commonConfig = {
       use: 'vue-loader'
     }, {
       test: /\.css$/,
-      use: ['style-loader', 'css-loader'],
+      use: [
+        {
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            // you can specify a publicPath here
+            // by default it uses publicPath in webpackOptions.output
+            publicPath: '../',
+            hmr: process.env.NODE_ENV === 'development',
+          },
+        },
+        'css-loader',
+      ],
       exclude: /node_modules/
     }]
   },
   plugins: [
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+    })
   ]
 };
 
