@@ -1,7 +1,7 @@
 <template>
   <section class="duallistbox">
     <Listbox></Listbox>
-    <div>buttons</div>
+    <div style="margin: 0 5px;">buttons</div>
     <Listbox></Listbox>
   </section>
 </template>
@@ -19,6 +19,7 @@ export default {
 <style>
 .duallistbox {
   width: 100%;
+  height: 100%;
   display: flex;
 }
 </style>
