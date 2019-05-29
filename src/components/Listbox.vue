@@ -1,8 +1,14 @@
 <template>
   <section class="listbox">
-    <label class="listbox__label">Title</label>
+    <label class="listbox__label">{{title}}</label>
     <ul class="listbox__body">
-      <li class="listbox__body__item" v-for="item in data">{{item}}</li>
+      <li class="listbox__body__item"
+          v-for="(item, index) in data"
+          v-bind:key="index"
+          v-bind:class="{ 'selected': selected[index] }"
+          v-on:click="toggle(index)">
+        {{item}}
+      </li>
     </ul>
   </section>
 </template>
@@ -10,9 +16,23 @@
 <script>
 export default {
   name: 'Listbox',
-  data() {
-    return {
-      data: [1,2,3,4,5]
+  props: {
+    title: {
+      type: String,
+      default: ''
+    },
+    data: {
+      type: Array,
+      default: function() { return [] }
+    },
+    selected: {
+      type: Array,
+      default: function() { return [] }
+    }
+  },
+  methods: {
+    toggle(index) {
+      this.$set(this.selected, index, !this.selected[index])
     }
   }
 }
@@ -20,6 +40,7 @@ export default {
 
 <style>
 .listbox {
+  width: 100%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -41,8 +62,13 @@ export default {
 .listbox__body__item {
   padding: 5px 0;
   text-indent: 15px;
+  transition: background-color 0.4s;
 }
 .listbox__body__item:hover {
   background-color: #eee;
+}
+.listbox__body__item.selected:hover,
+.selected {
+  background-color: aliceblue;
 }
 </style>
