@@ -10,6 +10,14 @@ var commonConfig = {
     path: path.resolve(__dirname + '/../dist/'),
     filename: '[name].js'
   },
+  externals: {
+    vue: {
+      root: 'Vue',
+      commonjs: 'vue',
+      commonjs2: 'vue',
+      amd: 'vue'
+    }
+  },
   module: {
     rules: [{
       test: /\.js$/,
