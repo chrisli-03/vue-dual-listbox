@@ -50,31 +50,22 @@ export default {
   },
   methods: {
     moveLeft() {
-      const newRight = []
-      this.rightData.forEach((n, i) => {
+      for (let i = this.rightData.length-1; i > -1; i--) {
         if (this.rightSelected[i]) {
-          this.leftData.push(n)
+          this.leftData.push(this.rightData.splice(i, 1)[0])
           this.leftSelected.push(false)
-        } else {
-          newRight.push(n)
         }
-      })
-      this.rightData.filter((n, i) => !this.rightSelected[i])
+      }
       this.rightSelected = new Array(this.leftData.length)
       this.rightSelected.fill(false)
     },
     moveRight() {
-      const newLeft = []
-      this.leftData.forEach((n, i) => {
+      for (let i = this.leftData.length-1; i > -1; i--) {
         if (this.leftSelected[i]) {
-          this.rightData.push(n)
+          this.rightData.push(this.leftData.splice(i, 1)[0])
           this.rightSelected.push(false)
-        } else {
-          newLeft.push(n)
         }
-      })
-      this.leftData.filter((n, i) => !this.leftSelected[i])
-      console.log(this.leftSelected)
+      }
       this.leftSelected = new Array(this.leftData.length)
       this.leftSelected.fill(false)
     }

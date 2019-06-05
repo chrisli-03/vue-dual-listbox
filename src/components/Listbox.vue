@@ -1,12 +1,16 @@
 <template>
   <section class="listbox">
-    <label class="listbox__label">{{title}}</label>
-    <ul class="listbox__body">
+    <label class="listbox__label">{{title}}{{target}}</label>
+    <ul class="listbox__body"
+        v-on:mousedown="setDragSelect(true)"
+        v-on:mouseup="setDragSelect(false)"
+        v-on:mouseleave="setDragSelect(false)">
       <li class="listbox__body__item"
           v-for="(item, index) in data"
           v-bind:key="index"
           v-bind:class="{ 'selected': selected[index] }"
-          v-on:click="toggle(index)">
+          v-on:mousedown="toggle(index, $event);target = selected[index]"
+          v-on:mouseenter="dragSelect ? $set(selected, index, target) : null">
         {{item}}
       </li>
     </ul>
@@ -30,9 +34,37 @@ export default {
       default: function() { return [] }
     }
   },
+  data() {
+    return {
+      dragSelect: false,
+      prevIndex: -1,
+      target: false
+    }
+  },
   methods: {
-    toggle(index) {
+    toggle(index, event) {
+      if (event.ctrlKey) {
+        if (window.getSelection) {window.getSelection().removeAllRanges();}
+        else if (document.selection) {document.selection.empty();}
+        if (event.shiftKey && this.prevIndex > -1) {
+          const prevSelection = this.selected[this.prevIndex]
+          for (let i = Math.min(this.prevIndex, index); i <= Math.max(this.prevIndex, index); i++) {
+            this.$set(this.selected, i, prevSelection)
+          }
+          return
+        }
+      } else {
+        this.selected.fill(false)
+      }
       this.$set(this.selected, index, !this.selected[index])
+      this.prevIndex = index
+    },
+    setDragSelect(dragSelect) {
+      if (dragSelect) {
+        if (window.getSelection) {window.getSelection().removeAllRanges();}
+        else if (document.selection) {document.selection.empty();}
+      }
+      this.dragSelect = dragSelect
     }
   }
 }
@@ -69,6 +101,6 @@ export default {
 }
 .listbox__body__item.selected:hover,
 .selected {
-  background-color: aliceblue;
+  background-color: #ddd;
 }
 </style>
