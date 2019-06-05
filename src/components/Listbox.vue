@@ -1,6 +1,6 @@
 <template>
   <section class="listbox">
-    <label class="listbox__label">{{title}}{{target}}</label>
+    <label class="listbox__label">{{title}}</label>
     <ul class="listbox__body"
         v-on:mousedown="setDragSelect(true)"
         v-on:mouseup="setDragSelect(false)"
