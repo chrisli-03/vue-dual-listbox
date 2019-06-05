@@ -90,6 +90,7 @@ export default {
   margin: 0;
   padding: 0;
   list-style: none;
+  overflow: auto;
 }
 .listbox__body__item {
   padding: 5px 0;
